@@ -10,10 +10,17 @@ let
     name = "AstralRinth_${version}_amd64.AppImage";
   };
 
-  image = pkgs.appimageTools.extractType1 { inherit pname version src; };
+  image = pkgs.appimageTools.extract { inherit pname version src; };
+
+  patched = pkgs.runCommand "${pname}-patched" { } ''
+    cp -r ${image} $out
+    chmod -R u+w $out
+    rm -f $out/usr/lib/libwayland-*.so*
+  '';
 in
-pkgs.appimageTools.wrapType2 rec {
-  inherit pname version src;
+pkgs.appimageTools.wrapAppImage rec {
+  inherit pname version;
+  src = patched;
 
   extraInstallCommands = ''
     cp -r "${image}/usr/share" "$out/share"
