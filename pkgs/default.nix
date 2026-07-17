@@ -27,6 +27,8 @@ pkgs.appimageTools.wrapAppImage rec {
     webkitgtk_4_1
     libsoup_3
     libayatana-appindicator
+    glib-networking
+    cacert
   ] ++ (with pkgs.gst_all_1; [
     gstreamer
     gst-plugins-base
@@ -34,6 +36,8 @@ pkgs.appimageTools.wrapAppImage rec {
   ]);
 
   profile = ''
+    export GIO_EXTRA_MODULES=/usr/lib/gio/modules
+    export SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
     unset GST_PLUGIN_PATH GST_PLUGIN_PATH_1_0 GST_PLUGIN_SYSTEM_PATH GST_PLUGIN_SYSTEM_PATH_1_0
     export GST_PLUGIN_SYSTEM_PATH_1_0=/usr/lib/gstreamer-1.0
     export GST_PLUGIN_SCANNER=/usr/libexec/gstreamer-1.0/gst-plugin-scanner
