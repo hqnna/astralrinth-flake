@@ -10,10 +10,14 @@ let
     name = "AstralRinth_${version}_amd64.AppImage";
   };
 
-  image = pkgs.appimageTools.extractType1 { inherit pname src; };
+  image = pkgs.appimageTools.extractType1 { inherit pname version src; };
 in
 pkgs.appimageTools.wrapType2 rec {
   inherit pname version src;
+
+  extraInstallCommands = ''
+    cp -r "${image}/usr/share" "$out/share"
+  '';
 
   meta = with pkgs.lib; {
     description = "A modern launcher based on Modrinth.";
