@@ -17,6 +17,8 @@ pkgs.appimageTools.wrapType2 rec {
 
   extraInstallCommands = ''
     cp -r "${image}/usr/share" "$out/share"
+    substituteInPlace "$out/share/applications/AstralRinth App.desktop" \
+      --replace-fail 'Exec=AppRun' 'Exec=${meta.mainProgram}'
   '';
 
   meta = with pkgs.lib; {
@@ -25,7 +27,7 @@ pkgs.appimageTools.wrapType2 rec {
     downloadPage = "https://git.astralium.su/didirus/AstralRinth/releases";
     sourceProvenance = with sourceTypes; [ binaryNativeCode ];
     maintainers = with maintainers; [ hanna ];
-    mainProgram = "AstralRinthApp";
+    mainProgram = "astralrinth";
     platforms = [ "x86_64-linux" ];
     license = licenses.mit;
   };
