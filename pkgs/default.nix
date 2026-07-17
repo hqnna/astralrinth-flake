@@ -23,26 +23,20 @@ pkgs.appimageTools.wrapAppImage rec {
   
   src = patched;
 
+  profile = ''
+    export GIO_MODULE_DIR="${pkgs.glib-networking}/lib/gio/modules/"
+  '';
+
   extraPkgs = pkgs: with pkgs; [
-    webkitgtk_4_1
-    libsoup_3
     libayatana-appindicator
     glib-networking
-    cacert
+    webkitgtk_4_1
+    libsoup_3
   ] ++ (with pkgs.gst_all_1; [
-    gstreamer
-    gst-plugins-base
     gst-plugins-good
+    gst-plugins-base
+    gstreamer
   ]);
-
-  profile = ''
-    export GIO_EXTRA_MODULES=/usr/lib/gio/modules
-    export SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
-    unset GST_PLUGIN_PATH GST_PLUGIN_PATH_1_0 GST_PLUGIN_SYSTEM_PATH GST_PLUGIN_SYSTEM_PATH_1_0
-    export GST_PLUGIN_SYSTEM_PATH_1_0=/usr/lib/gstreamer-1.0
-    export GST_PLUGIN_SCANNER=/usr/libexec/gstreamer-1.0/gst-plugin-scanner
-    export GST_REGISTRY_1_0="''${XDG_RUNTIME_DIR:-/tmp}/${pname}-gst-registry.bin"
-  '';
 
   extraInstallCommands = ''
     cp -r "${image}/usr/share" "$out/share"
