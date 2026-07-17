@@ -16,6 +16,7 @@ let
     cp -r ${image} $out
     chmod -R u+w $out
     rm -f $out/usr/lib/libwayland-*.so*
+    rm -f $out/usr/lib/libgst*.so*
   '';
 in
 pkgs.appimageTools.wrapAppImage rec {
@@ -24,8 +25,9 @@ pkgs.appimageTools.wrapAppImage rec {
   src = patched;
 
   profile = ''
-    unset GST_PLUGIN_PATH GST_PLUGIN_PATH_1_0 GST_PLUGIN_SYSTEM_PATH
+    unset GST_PLUGIN_PATH GST_PLUGIN_PATH_1_0 GST_PLUGIN_SYSTEM_PATH GST_PLUGIN_SYSTEM_PATH_1_0
     export GST_PLUGIN_SYSTEM_PATH_1_0=/usr/lib/gstreamer-1.0
+    export GST_PLUGIN_SCANNER=/usr/libexec/gstreamer-1.0/gst-plugin-scanner
     export GST_REGISTRY_1_0="''${XDG_RUNTIME_DIR:-/tmp}/${pname}-gst-registry.bin"
   '';
 
