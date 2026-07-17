@@ -24,6 +24,7 @@ pkgs.appimageTools.wrapAppImage rec {
   src = patched;
 
   profile = ''
+    export GTK_USE_PORTAL=1
     export GIO_MODULE_DIR="${pkgs.glib-networking}/lib/gio/modules/"
   '';
 
@@ -31,6 +32,7 @@ pkgs.appimageTools.wrapAppImage rec {
     libayatana-appindicator
     glib-networking
     webkitgtk_4_1
+    xdg-utils
     libsoup_3
   ] ++ (with pkgs.gst_all_1; [
     gst-plugins-good
