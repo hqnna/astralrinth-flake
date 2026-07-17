@@ -20,7 +20,20 @@ let
 in
 pkgs.appimageTools.wrapAppImage rec {
   inherit pname version;
+  
   src = patched;
+
+  profile = ''
+    unset GST_PLUGIN_PATH GST_PLUGIN_PATH_1_0 GST_PLUGIN_SYSTEM_PATH
+    export GST_PLUGIN_SYSTEM_PATH_1_0=/usr/lib/gstreamer-1.0
+    export GST_REGISTRY_1_0="''${XDG_RUNTIME_DIR:-/tmp}/${pname}-gst-registry.bin"
+  '';
+
+  extraPkgs = pkgs: with pkgs.gst_all_1; [
+    gstreamer
+    gst-plugins-base
+    gst-plugins-good
+  ];
 
   extraInstallCommands = ''
     cp -r "${image}/usr/share" "$out/share"
