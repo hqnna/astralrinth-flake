@@ -18,7 +18,7 @@ pkgs.appimageTools.wrapType2 rec {
   extraInstallCommands = ''
     cp -r "${image}/usr/share" "$out/share"
     substituteInPlace "$out/share/applications/AstralRinth App.desktop" \
-      --replace-fail 'Exec=AppRun' 'Exec=${meta.mainProgram}'
+      --replace-fail 'Exec=AstralRinthApp' 'Exec=${meta.mainProgram}'
   '';
 
   meta = with pkgs.lib; {
